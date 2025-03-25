@@ -54,7 +54,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Autoriser uniquement http://localhost:3000
-        configuration.setAllowedOrigins(List.of("https://front1-xrqs-9rpuswwzv-divs-projects-19fee68c.vercel.app"));
+        configuration.setAllowedOrigins(List.of("https://front1-xrqs-7vdsu5i5q-divs-projects-19fee68c.vercel.app"));
 
         // Autoriser les méthodes GET, POST, PUT, DELETE, etc.
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
