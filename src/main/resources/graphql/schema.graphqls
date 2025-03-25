@@ -1,0 +1,204 @@
+# Type de la réponse de login
+type LoginResponse {
+    token: String  # Le JWT généré
+    expirationTime: String  # Le temps d'expiration du token
+}
+
+
+# Entrée pour la connexion
+input LoginInput {
+    email: String!
+    pass: String!
+}
+
+
+# Enum pour le statut des tâches et des projets
+enum Status {
+    isNostarted
+    isProgress
+    isFinished
+    created
+    deleted
+    reassigned,
+    assigned,
+    late,
+    noStartedToProgress,
+    ProgressToFinished,
+}
+
+# Modèle Todo
+type Todo {
+    id: ID
+    idProject: ID
+    idCreateur: ID
+    title: String
+    description: String
+    status: Status
+    dateExp: String
+}
+
+# Entrée pour la création et mise à jour de Todo
+input TodoInput {
+    title: String!
+    description: String!
+    status: Status!
+    idProject: ID!
+    idCreateur: ID!
+    dateExp: String!
+}
+
+# Modèle Historique
+type Historique {
+    id: ID
+    idUser: ID
+    idTodo: ID
+    status: Status
+    createdAt: String
+}
+
+# Entrée pour la création d'un Historique
+input HistoriqueInput {
+    idUser: ID!
+    idTodo: ID!
+    status: Status!
+}
+
+# Modèle Project
+type Project {
+    id: ID
+    name: String
+    description: String
+    idCreateur: ID
+}
+
+# Entrée pour la création et mise à jour de Project
+input ProjectInput {
+    name: String!
+    description: String!
+    idCreateur: ID!
+}
+
+# Modèle ProjectTeam
+type ProjectTeam {
+    id: ID
+    idTeam: ID
+    idProject: ID
+    status: Status
+}
+
+# Entrée pour la création et mise à jour de ProjectTeam
+input ProjectTeamInput {
+    idTeam: ID!
+    idProject: ID!
+    status: Status!
+}
+
+# Modèle Team
+type Team {
+    id: ID
+    name: String
+    idCreateur: ID
+}
+
+# Entrée pour la création et mise à jour de Team
+input TeamInput {
+    name: String!
+    idCreateur: ID!
+}
+
+# Modèle User
+type User {
+    id: ID
+    firstName: String
+    lastName: String
+    email: String
+    pass: String
+}
+
+# Entrée pour la création et mise à jour de User
+input UserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    pass: String!
+}
+
+# Modèle UserRight
+type UserRight {
+    id: ID
+    idUser: ID
+    idProject: ID
+    isAdmin: Boolean
+}
+
+# Entrée pour la création et mise à jour de UserRight
+input UserRightInput {
+    idUser: ID!
+    idProject: ID!
+    isAdmin: Boolean!
+}
+
+# Modèle UserAssignation
+type UserAssignation {
+    id: ID
+    idTodo: ID
+    idUser: ID
+}
+
+# Entrée pour la création et mise à jour de UserAssignation
+input UserAssignationInput {
+    idTodo: ID!
+    idUser: ID!
+}
+
+# Requêtes pour récupérer les tâches, historiques, projets, équipes, utilisateurs, équipes de projet, droits utilisateur et assignations
+type Query {
+    getAllTodos: [Todo]
+    getTodoByIdCreateur(idCreateur: ID!): [Todo]
+    getTodoByIdProject(idProject: ID!): [Todo]
+    getOneTodo(id: ID!): Todo
+    getAllHistoriques: [Historique]
+    getHistoriqueByIdTodo(idTodo: ID!): [Historique]
+    getHistoriqueByIdUser(idUser: ID!): [Historique]
+    getAllProjects: [Project]
+    getProjectByIdCreateur(idCreateur: ID!): [Project]
+    getProjectById(id: ID!): Project
+    getAllProjectTeams: [ProjectTeam]
+    getProjectTeamById(id: ID!): ProjectTeam
+    getAllTeams: [Team]
+    getTeamById(id: ID!): Team
+    getAllUsers: [User]
+    getOneUser(id: ID!): User
+    getAllUserRights: [UserRight]
+    getUserRightById(id: ID!): UserRight
+    getAllUserAssignations: [UserAssignation]
+    getUserAssignationById(id: ID!): UserAssignation
+}
+
+# Mutations pour créer, mettre à jour, et supprimer des Todo, Historique, Project, ProjectTeam, Team, User, UserRight et UserAssignation
+type Mutation {
+    createTodo(todoInput: TodoInput!): Todo
+    updateTodo(id: ID! todoInput: TodoInput!): Todo
+    deleteTodo(id: ID!): Boolean
+    createHistorique(historiqueInput: HistoriqueInput!): Historique
+    createProject(projectInput: ProjectInput!): Project
+    updateProject(id: ID! projectInput: ProjectInput!): Project
+    deleteProject(id: ID!): Boolean
+    createProjectTeam(projectTeamInput: ProjectTeamInput!): ProjectTeam
+    updateProjectTeam(id: ID! projectTeamInput: ProjectTeamInput!): ProjectTeam
+    deleteProjectTeam(id: ID!): Boolean
+    createTeam(teamInput: TeamInput!): Team
+    updateTeam(id: ID! teamInput: TeamInput!): Team
+    deleteTeam(id: ID!): Boolean
+    createUser(userInput: UserInput!): User
+    updateUser(id: ID! userInput: UserInput!): User
+    deleteUser(id: ID!): Boolean
+    createUserRight(userRightInput: UserRightInput!): UserRight
+    updateUserRight(id: ID! userRightInput: UserRightInput!): UserRight
+    deleteUserRight(id: ID!): Boolean
+    createUserAssignation(userAssignationInput: UserAssignationInput!): UserAssignation
+    updateUserAssignation(id: ID! userAssignationInput: UserAssignationInput!): UserAssignation
+    deleteUserAssignation(id: ID!): Boolean
+    signup(userInput: UserInput!): User  # Créer un nouvel utilisateur
+    login(loginInput: LoginInput!): LoginResponse  # Authentifier l'utilisateur et retourner le token
+}
